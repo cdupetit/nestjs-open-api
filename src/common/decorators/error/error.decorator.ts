@@ -13,17 +13,18 @@ export function ApiErrorDecorator(
   options?: ApiResponseOptions,
 ) {
   return applyDecorators(
+    ApiExtraModels(ErrorDTO),
     ApiResponse({
       ...options,
       status: statusCode,
       description: description,
+      example: {
+        message: message,
+        status_code: statusCode,
+        date: new Date().toISOString(),
+      },
       schema: {
-        default: {
-          message: message,
-          status_code: statusCode,
-          date: new Date().toISOString(),
-        },
-        type: getSchemaPath(ErrorDTO),
+        $ref: getSchemaPath(ErrorDTO),
       },
     }),
   );
